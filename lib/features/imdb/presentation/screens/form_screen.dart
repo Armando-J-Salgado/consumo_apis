@@ -1,6 +1,8 @@
+import 'package:consumo_apis/features/imdb/data/models/movie_model.dart';
 import 'package:consumo_apis/features/imdb/presentation/widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:consumo_apis/features/imdb/presentation/widgets/movie_card.dart';
+import 'package:consumo_apis/features/imdb/presentation/widgets/movie_list.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -14,7 +16,7 @@ class _FormScreenState extends State<FormScreen> {
   final TextEditingController searchController = TextEditingController();
 
   bool isLoading = false;
-  List<dynamic> movies = [];
+  List<MovieModel> movies = [];
 
   Future<void> searchMovies() async {
     setState(() {
@@ -77,9 +79,7 @@ class _FormScreenState extends State<FormScreen> {
                   const Center(
                     child: CircularProgressIndicator(),
                   ),
-                ...movies.map(
-                  (movie) => MovieCard(movie: movie),
-                ),
+                MovieList(movies: movies),
               ],
             ),
           ),
