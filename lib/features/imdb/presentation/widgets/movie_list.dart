@@ -16,12 +16,16 @@ class MovieList extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Column(
-      children: movies
-          .map(
-            (movie) => MovieCard(movie: movie),
-          )
-          .toList(),
+    return SizedBox(
+      height: 500,
+      child: ListView.builder(
+        itemCount: movies.length,
+        itemBuilder: (context, index) {
+          return MovieCard(
+            movie: movies[index],
+          );
+        },
+      ),
     );
   }
 }
