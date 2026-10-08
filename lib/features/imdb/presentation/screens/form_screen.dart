@@ -2,6 +2,9 @@ import 'package:consumo_apis/features/imdb/data/models/movie_model.dart';
 import 'package:consumo_apis/features/imdb/presentation/widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:consumo_apis/features/imdb/presentation/widgets/movie_list.dart';
+import 'package:consumo_apis/features/imdb/data/datasource/imdb_datasource.dart';
+import 'package:consumo_apis/features/imdb/data/repositories/imdb_repository.dart';
+import 'package:consumo_apis/features/imdb/data/datasource/imdb_exception.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -14,8 +17,19 @@ class _FormScreenState extends State<FormScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController searchController = TextEditingController();
 
+  late final ImdbRepository repository;
+
   bool isLoading = false;
   List<MovieModel> movies = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    repository = ImdbRepository(
+      datasource: ImdbDatasource(),
+    );
+  }
 
   Future<void> searchMovies() async {
     setState(() {
@@ -24,15 +38,35 @@ class _FormScreenState extends State<FormScreen> {
 
     final query = searchController.text.trim();
 
-    // PONER LLAMADA AL REPOSITORIO AQUÍ
-    // final results = await repository.searchMovies(query);
-    // setState(() {
-    //   movies = results;
-    // });
+    try {
+      final results = await repository.searchMovies(query);
 
-    setState(() {
-      isLoading = false;
-    });
+      if (!mounted) return;
+
+      setState(() {
+        movies = results;
+      });
+    } on ImdbException catch (error) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.message)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ocurrió un error al buscar las películas'),
+        ),
+      );
+    } finally {
+      if (!mounted) return;
+
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
