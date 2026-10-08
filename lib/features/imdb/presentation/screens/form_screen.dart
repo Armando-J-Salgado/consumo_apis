@@ -1,5 +1,6 @@
 import 'package:consumo_apis/features/imdb/presentation/widgets/search_field.dart';
 import 'package:flutter/material.dart';
+import 'package:consumo_apis/features/imdb/presentation/widgets/movie_card.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -77,10 +78,7 @@ class _FormScreenState extends State<FormScreen> {
                     child: CircularProgressIndicator(),
                   ),
                 ...movies.map(
-                  (movie) => ListTile(
-                    title: Text(movie.title),
-                    subtitle: Text(movie.year),
-                  ),
+                  (movie) => MovieCard(movie: movie),
                 ),
               ],
             ),
