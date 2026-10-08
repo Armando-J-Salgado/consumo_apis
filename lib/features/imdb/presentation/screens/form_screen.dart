@@ -1,7 +1,6 @@
 import 'package:consumo_apis/features/imdb/data/models/movie_model.dart';
 import 'package:consumo_apis/features/imdb/presentation/widgets/search_field.dart';
 import 'package:flutter/material.dart';
-import 'package:consumo_apis/features/imdb/presentation/widgets/movie_card.dart';
 import 'package:consumo_apis/features/imdb/presentation/widgets/movie_list.dart';
 
 class FormScreen extends StatefulWidget {
